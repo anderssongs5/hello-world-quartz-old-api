@@ -1,0 +1,39 @@
+apply plugin: 'java'
+apply plugin: 'eclipse'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+jar {
+    manifest {
+    	def dateTime = new Date()
+        attributes 'Implementation-Title': 'Usando Quartz para Job Scheduling con API antigua',
+			"Implementation-Version": "1." + dateTime.getTime().toString(),
+		    "Creation-Date": dateTime.toTimestamp().toString(),
+            "Built-JDK": System.getProperty('java.version')
+    }
+
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile group: 'opensymphony', name: 'quartz', version: '1.6.3'
+    compile group: 'commons-collections', name: 'commons-collections', version: '3.2.1'
+    compile group: 'org.apache.directory.studio', name: 'org.apache.commons.logging', version: '1.1.1'
+}
+
+test {
+    systemProperties 'property': 'value'
+}
+
+uploadArchives {
+    repositories {
+       flatDir {
+           dirs 'repos'
+       }
+    }
+}
